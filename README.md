@@ -19,4 +19,4 @@ Run
 
 ```
 1. Create file statement.csv in tests directory
-2. Run mocha tests/api-test.js
+2. Run mocha tests/app-test.js
