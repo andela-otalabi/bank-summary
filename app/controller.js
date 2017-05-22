@@ -1,65 +1,56 @@
-var OptimalModel = require('./models');
+var path = require('path');
+var csv = require('csvtojson');
+
+var statementArray = [];
+
+var convertCsvToJson = function(filePath, callback){
+    csv().fromFile(filePath).on('json', function(jsonObj){
+        statementArray.push(jsonObj);
+    }).on('done', function(error){
+        if (error) {
+            callback(error)
+        }
+        return callback(null, statementArray);
+        console.log('end');
+    })
+};
 
 module.exports = {
-    getOptimal: function(req, res){
-        OptimalModel.find(function(err, optimal){
-            if (err) {
-                res.send(err);
-            }
-            res.json(optimal);
-        });
-    },
-
-    getOneOptimal: function(req, res){
-        OptimalModel.findById(req.params.id, function(err, optimal){
-            if (err) {
-                res.send(err);
-            }
-            res.json(optimal);
-        });
-    },
-
-    createOptimal: function(req, res){
-        var optimal = new OptimalModel(req.body);
-        optimal.name = req.body.name;
-        optimal.category = req.body.category;
-        optimal.save(function(err, optimal){
-            if (err) {
-                res.send(err);
-            }
-            else {
+    generateSummary: function(req, res){
+        var deposits = 0;
+        var withdrawal = 0;
+        var categorySummary = {};
+        if (req.files) {
+            convertCsvToJson(req.files[0].path, function(err, result){
+                for(var i=0; i< result.length; i++){
+                    var eachTx = result[i];
+                    for (var key in eachTx) {
+                        if(key === 'Amount'){
+                            if (eachTx[key] > 0){
+                                deposits = deposits + parseInt(eachTx[key]);
+                            }
+                            else {
+                                withdrawal = withdrawal - eachTx[key];
+                            }
+                        }
+                        if(key === 'Category'){
+                            if (categorySummary[eachTx[key]]){
+                                categorySummary[eachTx[key]] = categorySummary[eachTx[key]] + parseInt(eachTx['Amount']);
+                            } else {
+                                categorySummary[eachTx[key]] = parseInt(eachTx['Amount']);
+                            }
+                        }
+                    }
+                }
                 res.json({
-                    message: 'saved',
-                    optimal
-                });
-            }
-        })
+                    deposits: deposits,
+                    withdrawal: withdrawal,
+                    categorySummary: categorySummary});
+            });
+        }
+        else{
+            res.send('please upload a file')
+        }
+
     }
-
-    // deleteOptimal: function(req, res){
-    //     OptimalModel.remove({_id: req.params.id}, function(err, result){
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.json({message: 'optimal successfully removed'});
-    //     })
-    // },
-
-    // updateOptimal: function(req, res){
-    //     OptimalModel.findById({_id: req.params.id}, function(err, optimal){
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         optimal.name = req.body.name;
-    //         optimal.category = req.body.category;
-
-    //         optimal.save(function (err, updatedOptimal) {
-    //             if (err) {
-    //                 res.send(err);
-    //             }
-    //             res.json({message: 'optimal updated', updatedOptimal});
-    //         });
-    //     })
-    // }
-
 }

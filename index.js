@@ -3,14 +3,9 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var app = express();
-var config = require('./config');
+var multer = require('multer');
 
-var dbUrl = process.env.ENV === 'test' ? config.testDbUrl : config.dbUrl
-
-mongoose.connect(dbUrl);
-mongoose.connection.on('open', function(){
-    console.log('connected to ' + dbUrl);
-})
+app.use(multer({dest:__dirname+'/uploads/'}).any());
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
