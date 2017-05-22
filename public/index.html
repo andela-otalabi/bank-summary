@@ -1,0 +1,26 @@
+<html ng-app="OptimalApp">
+<head>
+    <title>optimal</title>
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="optimal.css">
+</head>
+<body ng-controller="optimalCtrl">
+    <div class="container top-part">
+        <div class="row">
+            <input type="text" placeholder="enter name" ng-model="formData.name">
+            <input type="text" placeholder="enter category" ng-model="formData.category">
+            <button id="submit" class="btn btn-default" type="button" ng-click="postOptimal()">submit</button>
+        </div>
+    </div>
+
+    <display></display>
+
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="service.js"></script>
+    <script type="text/javascript" src="controller.js"></script>
+    <script type="text/javascript" src="directive.js"></script>
+</body>
+</html>
