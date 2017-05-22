@@ -20,3 +20,4 @@ Run
 ```
 1. Create file statement.csv in tests directory
 2. Run mocha tests/app-test.js
+3. Run karma start for frontend controller testing

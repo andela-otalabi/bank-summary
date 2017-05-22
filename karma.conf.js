@@ -16,6 +16,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
     'public/bower_components/angular/angular.js',
+    'public/bower_components/chart.js/dist/Chart.js',
+    'public/bower_components/ng-file-upload/ng-file-upload.js',
+    'public/bower_components/angular-chart.js/dist/angular-chart.min.js',
     'public/bower_components/angular-mocks/angular-mocks.js',
     'public/app.js',
     'public/service.js',
