@@ -1,1 +1,1 @@
-var app = angular.module('OptimalApp', []);
+var app = angular.module('OptimalApp', ['ngFileUpload','chart.js']);

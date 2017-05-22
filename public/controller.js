@@ -1,17 +1,17 @@
-app.controller('optimalCtrl', ['$scope', 'Optimal', function($scope, Optimal){
-    $scope.formData = {};
-
-    Optimal.getOptimal().then(function(response){
-        $scope.allOptimal = response.data;
-    }, function(err){
-        console.log(err);
-    })
-
-    $scope.postOptimal = function(){
-        Optimal.postOptimal($scope.formData).then(function(response){
-            window.location.reload(true);
-        }, function(err){
-            console.log(err);
+app.controller('optimalCtrl', ['$scope', 'Optimal','Upload', function($scope, Optimal, Upload){
+    $scope.ready = false;
+    $scope.postOptimal = function(file){
+        Upload.upload({
+            url: '/api',
+            data: {file: file}
+        }).then(function(res){
+            if(res){
+                $scope.ready = true
+                $scope.labels = Object.keys(res.data.categorySummary);
+                $scope.data = Object.values(res.data.categorySummary);
+                $scope.deposits = res.data.deposits;
+                $scope.withdrawal = res.data.withdrawal;
+            }
         })
     }
 }]);

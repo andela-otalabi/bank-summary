@@ -23,21 +23,21 @@ module.exports = {
         if (req.files) {
             convertCsvToJson(req.files[0].path, function(err, result){
                 for(var i=0; i< result.length; i++){
-                    var eachTx = result[i];
-                    for (var key in eachTx) {
+                    var eachTransaction = result[i];
+                    for (var key in eachTransaction) {
                         if(key === 'Amount'){
-                            if (eachTx[key] > 0){
-                                deposits = deposits + parseInt(eachTx[key]);
+                            if (eachTransaction[key] > 0){
+                                deposits = deposits + parseInt(eachTransaction[key]);
                             }
                             else {
-                                withdrawal = withdrawal - eachTx[key];
+                                withdrawal = withdrawal - eachTransaction[key];
                             }
                         }
                         if(key === 'Category'){
-                            if (categorySummary[eachTx[key]]){
-                                categorySummary[eachTx[key]] = categorySummary[eachTx[key]] + parseInt(eachTx['Amount']);
+                            if (categorySummary[eachTransaction[key]]){
+                                categorySummary[eachTransaction[key]] = categorySummary[eachTransaction[key]] + parseInt(eachTransaction['Amount']);
                             } else {
-                                categorySummary[eachTx[key]] = parseInt(eachTx['Amount']);
+                                categorySummary[eachTransaction[key]] = parseInt(eachTransaction['Amount']);
                             }
                         }
                     }
@@ -51,6 +51,5 @@ module.exports = {
         else{
             res.send('please upload a file')
         }
-
     }
 }
